@@ -23,7 +23,7 @@ func init() {
 	}
 
 	vp.SetConfigType("yaml")
-	err = vp.ReadConfig(bytes.NewBuffer(configFileStream))
+	err = vp.ReadConfig(bytes.NewReader(configFileStream))
 	if err != nil {
 		panic(err)
 	}

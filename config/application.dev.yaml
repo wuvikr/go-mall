@@ -1,6 +1,10 @@
 app:
   env: dev
   name: go-mall
+  log:
+    path: "/tmp/applogs/go-mall.log"
+    maxsize: 100
+    maxage: 60
 
 database:
   type: mysql
@@ -8,3 +12,5 @@ database:
   maxopen: 100
   maxidle: 10
   maxlifetime: 300
+
+
