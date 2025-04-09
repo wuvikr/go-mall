@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"go-mall/common/app"
 	"go-mall/common/errcode"
 	"go-mall/common/logger"
 	"go-mall/common/middleware"
@@ -76,6 +77,20 @@ func main() {
 			"msg":  apiErr.Msg(),
 		})
 
+	})
+
+	g.GET("/response-object-test", func(c *gin.Context) {
+		data := map[string]string{
+			"key":  "value",
+			"key2": "value2",
+		}
+		app.NewResponse(c).Success(data)
+	})
+
+	g.GET("/response-error-test", func(c *gin.Context) {
+		baseErr := errors.New("a dao error")
+		err := errcode.Wrap("包装错误", baseErr)
+		app.NewResponse(c).Error(errcode.ErrServer.WithCause(err))
 	})
 
 	g.Run("127.0.0.1:8080")

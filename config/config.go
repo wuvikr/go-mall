@@ -15,6 +15,10 @@ type appConfig struct {
 		FileMaxSize      int    `mapstructure:"maxsize"`
 		BackUpFileMaxAge int    `mapstructure:"max_age"`
 	}
+	Pagination struct {
+		DefaultPageSize int `mapstructure:"default_page_size"`
+		MaxPageSize     int `mapstructure:"max_page_size"`
+	}
 }
 
 type databaseConfig struct {
