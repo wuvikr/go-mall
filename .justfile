@@ -1,6 +1,6 @@
-# run
+# just run
 run:
-    go run main.go
+    env ENV=dev go run main.go
 
 
 # podman build image

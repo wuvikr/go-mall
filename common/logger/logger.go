@@ -80,6 +80,7 @@ func (l *logger) Error(msg string, kv ...any) {
 	l.log(zapcore.ErrorLevel, msg, kv...)
 }
 
+// getLoggerCaller 获取日志调用者信息 -- 方法名，文件名，行号
 func (l *logger) getLoggerCaller() (funcName, file string, line int) {
 	pc, file, line, ok := runtime.Caller(3)
 	if !ok {

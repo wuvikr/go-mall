@@ -1,3 +1,4 @@
+// config.go 定义配置对象
 package config
 
 import "time"
@@ -12,7 +13,7 @@ type appConfig struct {
 	Name string `yaml:"name"`
 	Log  struct {
 		FilePath         string `mapstructure:"path"`
-		FileMaxSize      int    `mapstructure:"maxsize"`
+		FileMaxSize      int    `mapstructure:"max_size"`
 		BackUpFileMaxAge int    `mapstructure:"max_age"`
 	}
 	Pagination struct {

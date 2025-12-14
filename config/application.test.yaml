@@ -3,7 +3,7 @@ app:
   name: go-mall
   log:
     path: "/tmp/applogs/go-mall.log"
-    max_size: 1
+    max_size: 100
     max_age: 60
   pagination:
     default_page_size: 20

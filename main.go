@@ -15,7 +15,11 @@ import (
 func main() {
 	g := gin.New()
 
-	g.Use(middleware.LogAccess(), middleware.Recovery(), middleware.StartTrace())
+	g.Use(
+		middleware.StartTrace(),
+		middleware.LogAccess(),
+		middleware.Recovery(),
+	)
 
 	g.GET("/ping", func(c *gin.Context) {
 		c.String(http.StatusOK, "pong")
@@ -23,6 +27,7 @@ func main() {
 
 	g.GET("/config-read", func(c *gin.Context) {
 		database := config.Database
+		logger.ZapLoggerTest(c)
 		log := config.App.Log
 		c.JSON(http.StatusOK, gin.H{
 			"type":        database.Type,
@@ -37,7 +42,7 @@ func main() {
 	})
 
 	g.GET("/logger-test", func(c *gin.Context) {
-		logger.New(c).Info("logger-test", "key", "value", "key2", 2)
+		logger.New(c).Info("logger-test", "key1", "value1", "key2", 2)
 
 		c.JSON(http.StatusOK, gin.H{
 			"status": "ok",
@@ -79,7 +84,7 @@ func main() {
 
 	})
 
-	g.GET("/response-object-test", func(c *gin.Context) {
+	g.GET("/response-obj", func(c *gin.Context) {
 		data := map[string]string{
 			"key":  "value",
 			"key2": "value2",
@@ -87,10 +92,31 @@ func main() {
 		app.NewResponse(c).Success(data)
 	})
 
-	g.GET("/response-error-test", func(c *gin.Context) {
+	g.GET("/response-error", func(c *gin.Context) {
 		baseErr := errors.New("a dao error")
 		err := errcode.Wrap("包装错误", baseErr)
 		app.NewResponse(c).Error(errcode.ErrServer.WithCause(err))
+	})
+
+	g.GET("/response-list", func(ctx *gin.Context) {
+		pagination := app.NewPagination(ctx)
+
+		data := []struct {
+			Name string `json: "name"`
+			Age  int    `json: "age"`
+		}{
+			{
+				Name: "zhangsan",
+				Age:  22,
+			},
+			{
+				Name: "lisi",
+				Age:  15,
+			},
+		}
+		pagination.SetTotalRows(2)
+		app.NewResponse(ctx).SetPagination(pagination).Success(data)
+
 	})
 
 	g.Run("127.0.0.1:8080")
