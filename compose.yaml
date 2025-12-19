@@ -1,0 +1,45 @@
+# 提前创建好挂载的数据目录
+services:
+  # Database
+  database:
+    image: mysql:5.7
+    name: mysql5.7
+    volumes:
+      - mysql5.7_data:/var/lib/mysql
+    environment:
+      - "MYSQL_DATABASE=go_mall"
+      - "MYSQL_USER=go_mall"
+      - "MYSQL_PASSWORD=Admin#098"
+      - "MYSQL_ROOT_PASSWORD=Admin#098"
+      - "TZ=Asia/Shanghai"
+    ports:
+      - "30306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    restart: unless-stopped
+
+  # Redis
+  redis:
+    image: redis:7
+    name: redis7
+    ports:
+      - '31379:6379'
+    volumes:
+      - redis_data:/data
+      - redis_conf:/etc/redis/
+    environment:
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+    command: ["redis-server", "/etc/redis/redis.conf"]
+
+volumes:
+  mysql5.7_data:
+    driver: local
+  redis_data:
+    driver: local

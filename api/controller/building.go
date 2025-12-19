@@ -24,10 +24,6 @@ func TestConfigRead(c *gin.Context) {
 	log := config.App.Log
 	c.JSON(http.StatusOK, gin.H{
 		"type":        database.Type,
-		"dsn":         database.DSN,
-		"maxopen":     database.MaxOpenConn,
-		"maxidle":     database.MaxIdleConn,
-		"maxlifetime": database.MaxLifeTime,
 		"log.path":    log.FilePath,
 		"log.maxsize": log.FileMaxSize,
 		"log.maxage":  log.BackUpFileMaxAge,

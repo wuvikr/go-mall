@@ -11,9 +11,15 @@ app:
 
 database:
   type: mysql
-  dsn: "reserved"
-  maxopen: 100
-  maxidle: 10
-  maxlifetime: 300
+  master:
+    dsn: root:Admin#098@tcp(127.0.0.1:30306)/go_mall?charset=utf8mb4&parseTime=True&loc=Asia%2FShanghai
+    maxopen: 100
+    maxidle: 10
+    maxlifetime: 30000000000 # 30s
+  slave:
+    dsn: root:Admin#098@tcp(127.0.0.1:30306)/go_mall?charset=utf8mb4&parseTime=True&loc=Asia%2FShanghai
+    maxopen: 100
+    maxidle: 10
+    maxlifetime: 300000000000
 
 
