@@ -26,12 +26,14 @@ func init() {
 }
 
 func initDB(options config.DBConnectOption) *gorm.DB {
-	db, err := gorm.Open(mysql.Open(options.DSN), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(options.DSN), &gorm.Config{
+		Logger: NewGormLogger(),
+	})
 	if err != nil {
 		panic(err)
 	}
 
-	sqlDB, err := db.DB()
+	sqlDB, _ := db.DB()
 	sqlDB.SetMaxIdleConns(options.MaxIdleConns)
 	sqlDB.SetMaxOpenConns(options.MaxOpenConns)
 	sqlDB.SetConnMaxLifetime(options.MaxLifeTime)
