@@ -6,6 +6,7 @@ import (
 	"go-mall/common/errcode"
 	"go-mall/common/logger"
 	"go-mall/config"
+	"go-mall/logic/appservice"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -105,4 +106,14 @@ func TestResponseList(ctx *gin.Context) {
 	pagination.SetTotalRows(2)
 	app.NewResponse(ctx).SetPagination(pagination).Success(data)
 
+}
+
+func TestGormLogger(ctx *gin.Context) {
+	svc := appservice.NewDemoAppSvc(ctx)
+	list, err := svc.GetDemoIdentities()
+	if err != nil {
+		app.NewResponse(ctx).Error(errcode.ErrServer.WithCause(err))
+		return
+	}
+	app.NewResponse(ctx).Success(list)
 }
