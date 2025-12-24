@@ -22,4 +22,9 @@ database:
     maxidle: 10
     maxlifetime: 300000000000
 
-
+redis:
+  addr: 127.0.0.1:31379
+  username: wuvikr
+  password: Admin#098
+  pool_size: 10
+  db: 0

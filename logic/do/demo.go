@@ -17,3 +17,7 @@ type DemoOrder struct {
 	CreatedAt    time.Time `json:"createdAt"`
 	UpdatedAt    time.Time `json:"updatedAt"`
 }
+
+func NewDemoOrder() *DemoOrder {
+	return &DemoOrder{}
+}

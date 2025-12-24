@@ -2,6 +2,11 @@ package appservice
 
 import (
 	"context"
+	"go-mall/api/reply"
+	"go-mall/api/request"
+	"go-mall/common/errcode"
+	"go-mall/common/util"
+	"go-mall/logic/do"
 	"go-mall/logic/domainservice"
 )
 
@@ -28,4 +33,30 @@ func (das *DemoAppSvc) GetDemoIdentities() ([]int64, error) {
 		identities = append(identities, demo.Id)
 	}
 	return identities, nil
+}
+
+func (das *DemoAppSvc) CreateDemoOrder(orderRequesst *request.DemoOrderCreate) (*reply.DemoOrder, error) {
+	demoOrderDo := new(do.DemoOrder)
+	err := util.CopyProperties(demoOrderDo, orderRequesst)
+	if err != nil {
+		errcode.Wrap("请求转换成demoOrderDo失败", err)
+		return nil, err
+	}
+
+	demoOrderDo, err = das.demoDomainSvc.CreateDemoOrder(demoOrderDo)
+	if err != nil {
+		return nil, err
+	}
+
+	// 做一些创建订单成功后的其他业务逻辑
+	// 比如异步发送创建订单成功的通知
+
+	replyDemoOrder := new(reply.DemoOrder)
+	err = util.CopyProperties(replyDemoOrder, demoOrderDo)
+	if err != nil {
+		errcode.Wrap("demoOrderDo转换成replyDemoOrder失败", err)
+		return nil, err
+	}
+
+	return replyDemoOrder, nil
 }
